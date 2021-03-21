@@ -113,9 +113,9 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>90</x>
      <y>40</y>
-     <width>151</width>
+     <width>211</width>
      <height>51</height>
     </rect>
    </property>
@@ -126,6 +126,19 @@
    </property>
    <property name="text">
     <string>贫困生管理系统</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lableError">
+   <property name="geometry">
+    <rect>
+     <x>211</x>
+     <y>270</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

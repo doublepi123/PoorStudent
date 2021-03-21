@@ -47,6 +47,9 @@ class Ui_Dialog(object):
         font = QFont()
         font.setPointSize(18)
         self.label_3.setFont(font)
+        self.lableError = QLabel(Dialog)
+        self.lableError.setObjectName(u"lableError")
+        self.lableError.setGeometry(QRect(211, 270, 131, 20))
 
         self.retranslateUi(Dialog)
 
@@ -61,5 +64,6 @@ class Ui_Dialog(object):
         self.buttonLogin.setText(QCoreApplication.translate("Dialog", u"\u767b\u5165", None))
         self.buttonRegist.setText(QCoreApplication.translate("Dialog", u"\u6ce8\u518c", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u8d2b\u56f0\u751f\u7ba1\u7406\u7cfb\u7edf", None))
+        self.lableError.setText("")
     # retranslateUi
 
