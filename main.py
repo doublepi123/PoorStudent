@@ -4,16 +4,20 @@ import hashlib
 from functools import partial
 from PySide2.QtSql import *
 from PySide2.QtWidgets import *
-from PySide2.QtCore import QObject, SIGNAL
+from PySide2.QtCore import *
 
 import Login
 import Regist
+import StuInformation
+import Student
 from PySide2.QtWidgets import (QApplication, QMainWindow, QDialog, QAction)
 
 db = QSqlDatabase.addDatabase('QSQLITE')
 login_dialog = Login.Ui_Dialog()
 regist_dialog = Regist.Ui_Dialog()
-windows = ''
+student_dialog = Student.Ui_Dialog()
+window = ''
+USER = ''
 
 
 def encodePWD(password):
@@ -22,8 +26,39 @@ def encodePWD(password):
     return h.hexdigest()
 
 
+def StuInforEdit():
+    global USER
+    global window
+    window = QDialog()
+    stuinfor = StuInformation.Ui_Dialog()
+    stuinfor.setupUi(window)
+    window.show()
+    model = QSqlTableModel()
+    view = stuinfor.tableView
+    view.setModel(model)
+    model.setQuery(QSqlQuery('SELECT STUID,NAME,BIRTHDAY,PEOPLE FROM STUDENT WHERE USERNAME = "' + USER + '"'))
+    model.setHeaderData(0, Qt.Horizontal, '学号')
+    model.setHeaderData(1, Qt.Horizontal, '姓名')
+    model.setHeaderData(2, Qt.Horizontal, '出生日期')
+    model.setHeaderData(3, Qt.Horizontal, '家庭人口')
+
+    view.show()
+
+
+def StudentSystem():
+    global student_dialog
+    global USER
+    global window
+    window = QDialog()
+    student_dialog.setupUi(window)
+    window.show()
+    student_dialog.labelUsername.setText(USER + ",您好！")
+    student_dialog.buttonEdit.clicked.connect(StuInforEdit)
+
+
 def loginAUser():
     global login_dialog
+    global USER
     username = login_dialog.textUsername.text()
     password = login_dialog.textPassword.text()
     pwd = encodePWD(password)
@@ -34,7 +69,13 @@ def loginAUser():
     else:
         realPwd = model.data(model.index(0, 1))
         if realPwd == pwd:
-            print(pwd, realPwd)
+            mod = model.data(model.index(0, 2))
+            USER = username
+            if mod == 1:
+                StudentSystem()
+            elif mod == 2:
+                pass
+
         else:
             login_dialog.lableError.setText("用户名或密码错误")
 
