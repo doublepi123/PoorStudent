@@ -23,13 +23,16 @@ class Ui_Dialog(object):
         self.labelUsername.setGeometry(QRect(10, 10, 151, 16))
         self.buttonEdit = QPushButton(Dialog)
         self.buttonEdit.setObjectName(u"buttonEdit")
-        self.buttonEdit.setGeometry(QRect(60, 60, 141, 28))
+        self.buttonEdit.setGeometry(QRect(60, 40, 141, 28))
         self.pushButton_2 = QPushButton(Dialog)
         self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(60, 200, 141, 28))
+        self.pushButton_2.setGeometry(QRect(60, 220, 141, 28))
         self.pushButton_3 = QPushButton(Dialog)
         self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setGeometry(QRect(60, 130, 141, 28))
+        self.pushButton_3.setGeometry(QRect(60, 160, 141, 28))
+        self.buttonSubmit = QPushButton(Dialog)
+        self.buttonSubmit.setObjectName(u"buttonSubmit")
+        self.buttonSubmit.setGeometry(QRect(60, 100, 141, 32))
 
         self.retranslateUi(Dialog)
 
@@ -42,5 +45,6 @@ class Ui_Dialog(object):
         self.buttonEdit.setText(QCoreApplication.translate("Dialog", u"\u586b\u5199\u4e2a\u4eba\u4fe1\u606f", None))
         self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"\u67e5\u8be2\u5ba1\u6279\u7ed3\u679c", None))
         self.pushButton_3.setText(QCoreApplication.translate("Dialog", u"\u67e5\u770b\u5206\u6790\u6570\u636e", None))
+        self.buttonSubmit.setText(QCoreApplication.translate("Dialog", u"\u63d0\u4ea4\u4fe1\u606f", None))
     # retranslateUi
 
