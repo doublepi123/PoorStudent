@@ -13,6 +13,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QDialog, QAction)
 db = QSqlDatabase.addDatabase('QSQLITE')
 login_dialog = Login.Ui_Dialog()
 regist_dialog = Regist.Ui_Dialog()
+windows = ''
 
 
 def encodePWD(password):
@@ -21,9 +22,8 @@ def encodePWD(password):
     return h.hexdigest()
 
 
-def loginSystem():
+def loginAUser():
     global login_dialog
-    connectdb()
     username = login_dialog.textUsername.text()
     password = login_dialog.textPassword.text()
     pwd = encodePWD(password)
@@ -55,39 +55,45 @@ def registAUser():
         regist_dialog.labelError.setText("两次输入密码不一致！")
         return
     model.setQuery("SELECT * FROM USER WHERE USERNAME = '" + username + "'")
-    if model.lastError().isValid():
+    print(username)
+    print("SELECT * FROM USER WHERE USERNAME = '" + username + "'")
+    print(model.rowCount())
+    if model.rowCount() == 0:
         pwd = encodePWD(password)
-        model.setQuery("INSERT INTO USER VALUES ("+"'"+username+"',"+"'"+pwd+"',"+"1)")
+        model.setQuery("INSERT INTO USER VALUES (" + "'" + username + "'," + "'" + pwd + "'," + "1)")
         regist_dialog.labelError.setText("注册成功")
-
+    else:
+        regist_dialog.labelError.setText("用户名已存在")
 
 
 def registSystem():
     global regist_dialog
-    app = QApplication()
-    main = Regist.QDialog()
-    regist_dialog.setupUi(main)
-    main.show()
+    global window
+    window = QDialog()
+    regist_dialog.setupUi(window)
+    window.show()
     regist_dialog.buttonSubmit.clicked.connect(registAUser)
-    app.exec_()
+
+
+def loginSystem():
+    global window
+    global login_dialog
+    window = QDialog()
+    login_dialog.setupUi(window)
+    window.show()
+    # 执行登入操作
+    login_dialog.buttonLogin.clicked.connect(loginAUser)
+    login_dialog.textPassword.setEchoMode(QLineEdit.Password)
+    login_dialog.buttonRegist.clicked.connect(registSystem)
 
 
 def main():
     # MACOS BIGSUR兼容
     os.environ['QT_MAC_WANTS_LAYER'] = '1'
-
     # QT环境初始化
+    connectdb()
     app = QApplication()
-    main = QDialog()
-
-    login_dialog.setupUi(main)
-    main.show()
-    # 执行登入操作
-    login_dialog.buttonLogin.clicked.connect(loginSystem)
-    login_dialog.textPassword.setEchoMode(QLineEdit.Password)
-    login_dialog.buttonRegist.clicked.connect(registSystem)
-    view = QSqlQueryModel()
-
+    loginSystem()
     app.exec_()
 
 
