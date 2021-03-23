@@ -11,7 +11,7 @@ import SubmitStudentInformation
 import Teacher
 import UserManager
 import os
-
+# 数据库
 db = QSqlDatabase.addDatabase('QSQLITE')
 # 登入界面
 login_dialog = Login.Ui_Dialog()
@@ -25,7 +25,8 @@ stuinfor = StuInformation.Ui_Dialog()
 teacher_dialog = Teacher.Ui_Dialog()
 # 修改密码
 changeAnyPwd_dialog = ChangeAnyPwd.Ui_Dialog()
-
+# 提交学生信息
+submitStudent_dialog = SubmitStudentInformation.Ui_Dialog()
 stuinforModel = QSqlTableModel()
 # 窗口
 window = ''
@@ -59,18 +60,27 @@ def stuinfoSaveAndExit():
     StudentSystem()
 
 
+def submit(user):
+    model = QSqlQueryModel()
+    model.setQuery('INSERT INTO SUBMIT VALUES("' + user + '" , 1)')
+
+
 def submitYes():
     global USER
+    global submitStudent_dialog
     submit(USER)
-    
+    submitStudent_dialog.label_2.setVisible(True)
+
 
 def submitStudentInformation():
     global window
+    global submitStudent_dialog
     window = QDialog()
-    sub = SubmitStudentInformation.Ui_Dialog()
-    sub.setupUi(window)
+    submitStudent_dialog.setupUi(window)
     window.show()
-    sub.buttonYes.clicked.connect(submitYes)
+    submitStudent_dialog.label_2.setVisible(False)
+    submitStudent_dialog.buttonYes.clicked.connect(submitYes)
+    submitStudent_dialog.buttonCancel.clicked.connect(StudentSystem)
 
 
 # 学生信息编辑
@@ -86,13 +96,29 @@ def StuInforEdit():
     query = QSqlQueryModel()
     query.setQuery("SELECT * FROM STUDENT WHERE USERNAME = '" + USER + "'")
     # 将数据库中的学生信息导入至学生信息表
-    if query.columnCount() > 0:
+    if query.rowCount() > 0:
         stuinfor.textID.setText(query.data(query.index(0, 2)))
         stuinfor.textName.setText(query.data(query.index(0, 1)))
         stuinfor.textPeople.setText(str(query.data(query.index(0, 3))))
         stuinfor.textIncome.setText(str(query.data(query.index(0, 4))))
         stuinfor.textCostForFood.setText(str(query.data(query.index(0, 5))))
         stuinfor.textCostForOther.setText(str(query.data(query.index(0, 6))))
+
+    model = QSqlQueryModel()
+    model.setQuery('SELECT * FROM SUBMIT WHERE USERNAME = "' + USER + '"')
+    if model.rowCount() > 0:
+        mod = model.data(model.index(0, 1))
+        print(mod)
+        if mod > 0:
+            stuinfor.textID.setFocusPolicy(Qt.NoFocus)
+            stuinfor.textName.setFocusPolicy(Qt.NoFocus)
+            stuinfor.textPeople.setFocusPolicy(Qt.NoFocus)
+            stuinfor.textIncome.setFocusPolicy(Qt.NoFocus)
+            stuinfor.textCostForFood.setFocusPolicy(Qt.NoFocus)
+            stuinfor.textCostForOther.setFocusPolicy(Qt.NoFocus)
+            stuinfor.labelError.setText(
+                '<html><head/><body><p><span style=" color:#ff0000;">信息已提交，不可更改</span></p></body></html>'
+            )
 
 
 # 启动学生信息系统

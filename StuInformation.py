@@ -76,10 +76,10 @@ class Ui_Dialog(object):
         self.buttonSave.setGeometry(QRect(300, 280, 111, 51))
         self.label_9 = QLabel(Dialog)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setGeometry(QRect(90, 20, 241, 51))
+        self.label_9.setGeometry(QRect(90, 20, 241, 71))
         self.labelError = QLabel(Dialog)
         self.labelError.setObjectName(u"labelError")
-        self.labelError.setGeometry(QRect(300, 330, 111, 16))
+        self.labelError.setGeometry(QRect(240, 330, 171, 20))
 
         self.retranslateUi(Dialog)
 
